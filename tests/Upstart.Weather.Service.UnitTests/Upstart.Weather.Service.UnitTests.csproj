@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+    <PackageReference Include="xunit" Version="2.4.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+    <PackageReference Include="coverlet.collector" Version="1.2.0" />
+    <PackageReference Include="Bogus" Version="33.0.2" />
+    <PackageReference Include="Moq" Version="4.16.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Upstart.Weather.Service.Domain\Upstart.Weather.Service.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Upstart.Weather.Service.Infra\Upstart.Weather.Service.Infra.csproj" />
+    <ProjectReference Include="..\..\src\Upstart.Weather.Service.Api\Upstart.Weather.Service.Api.csproj" />
+    <ProjectReference Include="..\..\src\Upstart.Weather.Service.Application\Upstart.Weather.Service.Application.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Geocoding\Handlers\" />
+    <Folder Include="Weather\" />
+    <Folder Include="Weather\Queries\" />
+  </ItemGroup>
+</Project>
