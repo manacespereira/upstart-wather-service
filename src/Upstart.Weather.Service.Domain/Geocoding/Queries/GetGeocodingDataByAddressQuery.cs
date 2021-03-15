@@ -15,7 +15,7 @@ namespace Upstart.Weather.Service.Domain.Geocoding.Queries
         public override void Validate()
         {
             AddNotifications(new Contract()
-                .IsNotNullOrWhiteSpace(Address, nameof(Address), "Address must be required")
+                .IsNotNullOrWhiteSpace(Address, nameof(Address), "Address is required")
                 .HasMinLen(Address, 5, nameof(Address), "Address must be complete"));
         }
     }
