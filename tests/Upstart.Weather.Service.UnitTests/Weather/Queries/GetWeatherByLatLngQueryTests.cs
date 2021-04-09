@@ -10,11 +10,12 @@ namespace Upstart.Weather.Service.UnitTests.Weather.Queries
 
 
         [Theory]
-        [InlineData("", "Address must be required")]
-        [InlineData("add", "Address must be complete")]
-        public void GetWeatherByLatLngQuery_ShouldTestInvalidQuery(string wrongOrNullAddress, string errorMessage)
+        [InlineData("", 1, "Address must be required")]
+        [InlineData("add", 1, "Address must be complete")]
+        [InlineData("address complete but 0 days to get the data", 0, "You should select 1 day or more")]
+        public void GetWeatherByLatLngQuery_ShouldTestInvalidQuery(string wrongOrNullAddress, int numberOfDays, string errorMessage)
         {
-            var query = new GetWeatherByAddressQuery(wrongOrNullAddress);
+            var query = new GetWeatherByAddressQuery(wrongOrNullAddress, numberOfDays);
 
             query.Validate();
 
@@ -24,10 +25,10 @@ namespace Upstart.Weather.Service.UnitTests.Weather.Queries
         }
 
         [Theory]
-        [InlineData("3000, complete, address")]
-        public void GetWeatherByLatLngQuery_ShouldTestValidQuery(string rightAddress)
+        [InlineData("3000, complete, address", 7)]
+        public void GetWeatherByLatLngQuery_ShouldTestValidQuery(string rightAddress, int numberOfDays)
         {
-            var query = new GetWeatherByAddressQuery(rightAddress);
+            var query = new GetWeatherByAddressQuery(rightAddress, numberOfDays);
 
             query.Validate();
 

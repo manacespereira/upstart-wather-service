@@ -10,6 +10,7 @@ using Upstart.Weather.Service.Domain.Weather.Models;
 using Upstart.Weather.Service.Domain.Weather.Queries;
 using Upstart.Weather.Service.Infra.ExternalServices;
 
+using System.Linq;
 namespace Upstart.Weather.Service.Application.QueryHandlers
 {
     public class WeatherQueryHandler : IRequestHandler<GetWeatherByAddressQuery, IResult>
@@ -28,7 +29,7 @@ namespace Upstart.Weather.Service.Application.QueryHandlers
         public async Task<IResult> Handle(GetWeatherByAddressQuery request, CancellationToken cancellationToken)
         {
             GetWeatherByAddressResponse response;
-            memoryCache.TryGetValue<GetWeatherByAddressResponse>(request.Address.ToLower(), out response);
+            memoryCache.TryGetValue<GetWeatherByAddressResponse>($"{request.Address.ToLower()}-{request.NumberOfDays}", out response);
 
             if (response != null) return Result.Ok(response);
 
@@ -48,7 +49,11 @@ namespace Upstart.Weather.Service.Application.QueryHandlers
 
             var weatherResult = await weatherService.GetWeatherByGridsAsync(grids.Properties.GridId, grids.Properties.GridX, grids.Properties.GridY);
 
-            response = new GetWeatherByAddressResponse(weatherResult.Properties.Periods, weatherResult.Properties.Elevation);
+            var weatherProperties = weatherResult.Properties;
+
+            var periodsByNumberOfDays = weatherProperties.Periods.Take(request.NumberOfDays * 2);
+
+            response = new GetWeatherByAddressResponse(periodsByNumberOfDays, weatherProperties.Elevation);
 
             memoryCache.Set<GetWeatherByAddressResponse>(request.Address.ToLower(), response, TimeSpan.FromMinutes(5));
 

@@ -10,9 +10,9 @@ namespace Upstart.Weather.Service.Api.Controllers
     public class WeatherController : BaseController
     {
         [HttpGet]
-        public async Task<IActionResult> Get(string address)
+        public async Task<IActionResult> Get(string address, int numberOfDays)
         {
-            var response = await Mediator.Send(new GetWeatherByAddressQuery(address));
+            var response = await Mediator.Send(new GetWeatherByAddressQuery(address, numberOfDays));
             return AsResult(response);
         }
     }
